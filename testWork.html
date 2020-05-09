@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<script>
+    let numberElementOfArray = Number(prompt('Please, enter number element of array :'));
+    let generalArray = [];
+    for (let j=0; j<numberElementOfArray; j++){
+        let valueElement = Number(prompt('Please, enter value'+ j +'element of your array :'));
+        generalArray.push(valueElement);
+
+    }
+    generalArray.sort(function (a, b) {
+        return a - b;
+    });
+    console.log('Your start array:  ' + '['+ generalArray+']');
+
+
+    let numberElementOfAllowed = Number(prompt('Please, enter number element of allowed :'));
+    let generalAllowed = [];
+    for (let d=0; d<numberElementOfAllowed; d++){
+        let value = prompt('Please, enter value'+ d +'element of your allowed :');
+        let valueElement = null;
+        if (value == 'any') {
+            valueElement = 'any';
+        }else
+        {
+            valueElement =  Number(value)
+        }
+        generalAllowed.push(valueElement);
+
+    }
+    generalAllowed.sort(function (a, b) {
+        return a - b;
+    });
+    console.log('Your start allowed:  ' + '['+ generalAllowed+']');
+
+
+    let numberElementOfPreferred = Number(prompt('Please, enter number element of preferred :'));
+    let generalPreferred = [];
+    for (let z=0; z<numberElementOfPreferred; z++){
+        let value = prompt('Please, enter value'+ z +'element of your prefered :');
+        let valueElement = null;
+        if (value == 'any') {
+            valueElement = 'any';
+        }else
+        {
+            valueElement =  Number(value)
+        }
+        generalPreferred.push(valueElement);
+    }
+    generalPreferred.sort(function (l, f) {
+        return l - f;
+    });
+    console.log('Your start preferred:  ' + '['+ generalPreferred+']');
+
+
+    function compareNumeric(arr, generalAllowed, generalPreferred) {
+
+        let arrResultsAfterAllowed = [];
+        let arrResultsAll = [];
+
+        console.log('generalArray: ', generalArray)
+        console.log('generalAllowed: ', generalAllowed)
+        console.log('generalPreferred: ', generalPreferred)
+
+        if (generalAllowed.includes('any')) {
+            arrResultsAfterAllowed = arr
+        }
+        else {
+            arr.forEach(function(element, i) {
+                if (generalAllowed.includes(element) && !arrResultsAfterAllowed.includes(element)) {
+                    arrResultsAfterAllowed.push(element)
+                }
+            });
+        }
+
+        if (arrResultsAfterAllowed.length == 0) {
+            return console.log('result:', arrResultsAfterAllowed);
+        }
+
+        if (generalPreferred.includes('any')) {
+            any = null
+            arrResultsAfterAllowed.forEach(function(element) {
+                if (!generalPreferred.includes(element)) {
+                    if (!any) {
+                        any = element
+                        generalPreferred[generalPreferred.indexOf('any')] = element;
+                    }else {
+                        generalPreferred.push(element)
+                    }
+                }
+            });
+            generalPreferred.sort(function (a, b) {
+                return a - b;
+            });
+        }
+
+        generalPreferred.forEach(function(element) {
+            findBiggerElement = arrResultsAfterAllowed.find(elementResult => elementResult > element)
+            findSmallerElement = arrResultsAfterAllowed.find(elementResult => elementResult < element && !arrResultsAll.includes(elementResult))
+
+            if (arrResultsAfterAllowed.includes(element) && !arrResultsAll.includes(element)) {
+                arrResultsAll.push(element)
+            }
+            else if (findBiggerElement && !arrResultsAll.includes(findBiggerElement)) {
+                arrResultsAll.push(findBiggerElement)
+            }
+            else if (!findBiggerElement && findSmallerElement && !arrResultsAll.includes(findSmallerElement)) {
+                arrResultsAll = [findSmallerElement]
+            }
+        });
+
+        return console.log('result: ', arrResultsAll)
+
+    }
+
+    // generalArray = [240,360,720]
+    // generalAllowed = [1080]
+    // generalPreferred = ['any',720]
+
+    compareNumeric(generalArray, generalAllowed, generalPreferred);
+
+</script>
